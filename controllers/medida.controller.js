@@ -10,10 +10,12 @@ medidaController.register = async (req, res) => {
         
         // Validar que todos los campos estén presentes
         if (!estatura || !m_cintura || !m_pierna || !m_peso || !m_brazo || !fecha || !id_paciente) {
+            console.log("Error en la validacion de campos");
             return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
 
         if(!id_paciente){
+            console.log("Error en la validacion de id_paciente");
             return res.status(400).json({message:"El paciente no se encuentra"});
         }
 
