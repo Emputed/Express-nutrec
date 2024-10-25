@@ -1,5 +1,5 @@
-import app from "./app.js"
+import { server } from "./app.js";
 
-app.listen(app.get("port"), ()=>{
-    console.log("Servidor corriendo en el puerto " + app.get("port"));
+server.listen(4000, ()=>{
+    console.log("Servidor corriendo en el puerto " + 4000);
 });

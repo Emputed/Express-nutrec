@@ -1,4 +1,4 @@
-import sequelize from "../utils/database.util.js";
+
 import plan_de_alimentacion from "../models/plan_de_alimentacion.js";
 
 const planController = {};
