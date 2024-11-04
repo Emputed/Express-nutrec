@@ -84,7 +84,7 @@ crudController.getPlanes = async (req, res) => {
 
 crudController.download = async (req, res) => {
   try {
-    const { id_plan } = req.params;
+    const id_plan  = req.params.id_plan;
     const plan = await plan_de_alimentacion.findOne({ where: { id_plan } });
 
     if (!plan) {
