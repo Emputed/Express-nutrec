@@ -4,7 +4,7 @@ dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 import paciente from "../models/paciente.js";
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import sequelize from "../utils/database.util.js";
 
 const pacienteController = {};
