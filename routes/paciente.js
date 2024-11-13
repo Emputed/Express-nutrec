@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/register', paciente.register);
 router.post('/login', paciente.login);
 router.put('/update', paciente.update);
+router.delete('/delete/:id', paciente.delete);
 
 export default router;

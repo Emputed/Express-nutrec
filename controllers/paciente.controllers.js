@@ -136,7 +136,20 @@ pacienteController.update = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: error.message });
     }
+},
+pacienteController.delete = async (req, res) => {
+    try{
+        const id = req.params;
+        const pacienteDelete = await paciente.findByPk(id);
+        if(!pacienteDelete){
+            return res.status(404).json({message: "Paciente no encontrado"});
+        }
+        await pacienteDelete.destroy();
+        return res.status(200).json({message:"Paciente eliminado"});
+    }catch(error){
+        console.error("Error eliminando el paciente:", error);
+        return res.status(500).json({ message: "Error eliminando el paciente" });
+    }
 };
-
 
 export default pacienteController;
