@@ -139,7 +139,7 @@ pacienteController.update = async (req, res) => {
 },
 pacienteController.delete = async (req, res) => {
     try{
-        const id = req.params;
+        const {id} = req.params;
         const pacienteDelete = await paciente.findByPk(id);
         if(!pacienteDelete){
             return res.status(404).json({message: "Paciente no encontrado"});
