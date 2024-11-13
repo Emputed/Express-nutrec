@@ -24,5 +24,19 @@ planController.upload = async (req, res) => {
         console.log("Error al subir pdf: ", error);
         res.status(500).json({ message: 'Error al guardar el archivo' });
     }
+},
+planController.delete = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const planDeleted = await plan_de_alimentacion.findByPk(id);
+        if(!planDeleted){
+            return res.status(404).json({message:"No se encuentra ese id para el plan de alimentacion"});
+        }
+        await planDeleted.destroy();
+        return res.status(200).json({message:"Plan elimnado con exito"});
+    }catch(error){
+        console.log(error);
+    }
 }
+
 export default planController;

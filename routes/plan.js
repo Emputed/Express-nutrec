@@ -10,5 +10,6 @@ const upload = multer({
   });
 
 router.post('/upload/:id_paciente', upload.single('file'), plan.upload);
+router.delete('/delete/:id', plan.delete);
 
 export default router;
