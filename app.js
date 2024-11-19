@@ -3,17 +3,17 @@ config();
 import express from "express";
 import logger from "morgan";
 import cors from "cors";
-import { createServer } from 'http'; // Para crear el servidor HTTP
-import { Server } from 'socket.io'; // Importar Socket.io
+import { Server } from 'socket.io';
+import http from 'http';
 
 // RUTAS
 import pacienteRouter from "./routes/paciente.js";
 import medidaRouter from "./routes/medida.js";
 import crudRouter from "./routes/crud.js";
 import planRouter from "./routes/plan.js";
+import mensajesRouter from "./routes/mensajes.js";
 
 const app = express();
-const server = createServer(app); // Crear servidor HTTP con Express
 
 // Configuración básica de la aplicación
 app.set("port", process.env.PORT || 4000);
@@ -36,29 +36,33 @@ app.use('/api/v1/paciente', pacienteRouter);
 app.use('/api/v1/medida', medidaRouter);
 app.use('/api/v1/crud', crudRouter);
 app.use('/api/v1/plan', planRouter);
+app.use('/api/v1/messages', mensajesRouter);
 
-// Inicializar Socket.io
+const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: "*", // Permitir cualquier origen (puedes restringir esto a tu frontend)
-        methods: ["GET", "POST"]
-    }
+  cors: {
+    origin: "*", 
+    methods: ["GET", "POST"],
+  },
 });
 
-// Manejar eventos de conexión de Socket.io
-io.on('connection', (socket) => {
-    console.log('Nuevo usuario conectado');
+io.on("connection", (socket) => {
+  console.log("Nuevo cliente conectado:", socket.id);
 
-    // Ejemplo de manejo de un evento de mensaje
-    socket.on('mensaje', (msg) => {
-        console.log('Mensaje recibido: ', msg);
-        // Emitir el mensaje a todos los usuarios conectados
-        io.emit('mensaje', msg);
-    });
+  socket.on("sendMessage", (data) => {
+    console.log("Mensaje recibido:", data);
+    const room = data.room;
+    io.to(room).emit("receiveMessage", data);
+  });
 
-    socket.on('disconnect', () => {
-        console.log('Usuario desconectado');
-    });
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`Usuario unido a la sala: ${room}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado:", socket.id);
+  });
 });
 
 export {app, server};
