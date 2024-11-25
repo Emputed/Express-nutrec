@@ -93,6 +93,28 @@ pacienteController.login = async (req, res) =>{
     }
 },
 
+pacienteController.verifyToken = async (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Extrae el token del header
+
+    if (!token) {
+        return res.status(401).json({ message: "Token no proporcionado" });
+    }
+
+    try {
+        // Verifica el token
+        const decoded = jwt.verify(token, SECRET_KEY);
+
+        // Puedes devolver información del token si es necesario
+        return res.status(200).json({
+            message: "Token válido",
+            data: decoded, // Información decodificada del token (como id, usuario, etc.)
+        });
+    } catch (error) {
+        console.error("Error verificando el token:", error);
+        return res.status(401).json({ message: "Token inválido o expirado" });
+    }
+},
+
 pacienteController.update = async (req, res) => {
     const t = await sequelize.transaction();
     try {
