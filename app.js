@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 // CORS
 app.use(
     cors({
-        origin: "*",
+        origin: "https://nice-glacier-0e793e60f.5.azurestaticapps.net",
         methods: "GET,PUT,DELETE,POST,HEAD",
         preflightContinue: false,
         optionsSuccessStatus: 204
@@ -41,7 +41,7 @@ app.use('/api/v1/messages', mensajesRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", 
+    origin: "https://nice-glacier-0e793e60f.5.azurestaticapps.net", 
     methods: ["GET", "POST"],
   },
 });
