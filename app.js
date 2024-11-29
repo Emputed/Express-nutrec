@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 // CORS
 app.use(
     cors({
-        origin: "https://nice-glacier-0e793e60f.5.azurestaticapps.net",
+        origin: "*",
         methods: "GET,PUT,DELETE,POST,HEAD",
         preflightContinue: false,
         optionsSuccessStatus: 204
