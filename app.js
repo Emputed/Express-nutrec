@@ -5,8 +5,6 @@ import logger from "morgan";
 import cors from "cors";
 import { Server } from 'socket.io';
 import http from 'http';
-import path from 'path';
-import { fileURLToPath } from 'url';
 // RUTAS
 import pacienteRouter from "./routes/paciente.js";
 import medidaRouter from "./routes/medida.js";
@@ -15,8 +13,6 @@ import planRouter from "./routes/plan.js";
 import mensajesRouter from "./routes/mensajes.js";
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Configuración básica de la aplicación
 app.set("port", process.env.PORT || 4000);
@@ -40,12 +36,6 @@ app.use('/api/v1/medida', medidaRouter);
 app.use('/api/v1/crud', crudRouter);
 app.use('/api/v1/plan', planRouter);
 app.use('/api/v1/messages', mensajesRouter);
-
-app.use(express.static(path.join(__dirname, 'dist')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
 
 
 const server = http.createServer(app);
