@@ -23,6 +23,7 @@ pacienteController.register = async (req, res) =>{
             usuario,
             password,
             estatus,
+            genero,
         } = req.body;
         console.log(req.body);
         const user = await paciente.findOne({where: {usuario} });
@@ -49,6 +50,7 @@ pacienteController.register = async (req, res) =>{
                 usuario: usuario,
                 password: hashPassword(password),
                 estatus: estatus,
+                genero: genero,
             },
             {transaction: t},
         );
@@ -85,7 +87,7 @@ pacienteController.login = async (req, res) =>{
         return res.status(200).json({
             message: "Login exitoso",
             token: token, // Si usas JWT
-            paciente: { id: user.id_paciente, username: user.usuario, status: user.estatus }  // Devuelve los datos que consideres necesarios
+            paciente: { id: user.id_paciente, username: user.usuario, status: user.estatus}  // Devuelve los datos que consideres necesarios
         });
     }catch(error){
         console.log(error);
@@ -94,8 +96,7 @@ pacienteController.login = async (req, res) =>{
 },
 
 pacienteController.verifyToken = async (req, res) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Extrae el token del header
-
+    const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: "Token no proporcionado" });
     }
@@ -103,11 +104,9 @@ pacienteController.verifyToken = async (req, res) => {
     try {
         // Verifica el token
         const decoded = jwt.verify(token, SECRET_KEY);
-
-        // Puedes devolver información del token si es necesario
         return res.status(200).json({
             message: "Token válido",
-            data: decoded, // Información decodificada del token (como id, usuario, etc.)
+            data: decoded, 
         });
     } catch (error) {
         console.error("Error verificando el token:", error);
@@ -119,7 +118,7 @@ pacienteController.update = async (req, res) => {
     const t = await sequelize.transaction();
     try {
         const {
-            id_paciente, // El ID del paciente a actualizar
+            id_paciente,
             nombre,
             apellido,
             f_nacimiento,
@@ -128,13 +127,13 @@ pacienteController.update = async (req, res) => {
             estatus
         } = req.body;
 
-        // Buscar al paciente por su ID
+
         const patient = await paciente.findByPk(id_paciente);
         if (!patient) {
             return res.status(404).json({ message: "Paciente no encontrado" });
         }
 
-        // Actualizar los campos proporcionados en el request body
+
         const updatedPatient = {
             nombre: nombre || patient.nombre,
             apellido: apellido || patient.apellido,
@@ -143,12 +142,11 @@ pacienteController.update = async (req, res) => {
             estatus: estatus || patient.estatus
         };
 
-        // Solo actualiza la contraseña si se proporciona una nueva
+
         if (password) {
             updatedPatient.password = hashPassword(password);
         }
 
-        // Ejecutar la actualización
         await paciente.update(updatedPatient, { where: { id_paciente } }, { transaction: t });
 
         await t.commit();

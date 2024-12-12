@@ -34,6 +34,10 @@ const paciente = sequelize.define(
             type: DataTypes.TINYINT(1),
             allowNull: true,
         },
+        genero: {
+            type: DataTypes.TINYINT(1),
+            allowNull: true,
+        },
 
     },
     {
