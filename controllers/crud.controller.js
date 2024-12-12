@@ -33,6 +33,16 @@ crudController.getPaciente = async (req, res) => {
     const id = req.params.id_paciente;
     const usuario = await paciente.findOne({
       where: { id_paciente: id },
+      attributes: [
+        "id_paciente",
+        "nombre",
+        "apellido",
+        [
+          sequelize.literal("TIMESTAMPDIFF(YEAR, f_nacimiento, CURDATE())"),
+          "edad",
+        ], //Calcular la edad
+        "genero",
+      ],
     });
     if (!usuario) {
       return res.status(404).json({ message: "Paciente no encontrado" });
