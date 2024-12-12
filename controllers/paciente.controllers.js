@@ -124,7 +124,8 @@ pacienteController.update = async (req, res) => {
             f_nacimiento,
             usuario,
             password,
-            estatus
+            estatus,
+            genero,
         } = req.body;
 
 
@@ -133,22 +134,20 @@ pacienteController.update = async (req, res) => {
             return res.status(404).json({ message: "Paciente no encontrado" });
         }
 
-
         const updatedPatient = {
             nombre: nombre || patient.nombre,
             apellido: apellido || patient.apellido,
             f_nacimiento: f_nacimiento || patient.f_nacimiento,
             usuario: usuario || patient.usuario,
-            estatus: estatus || patient.estatus
+            estatus: estatus || patient.estatus,
+            genero : genero || patient.genero,
         };
-
 
         if (password) {
             updatedPatient.password = hashPassword(password);
         }
 
         await paciente.update(updatedPatient, { where: { id_paciente } }, { transaction: t });
-
         await t.commit();
         return res.json({ message: "Paciente actualizado correctamente" });
     } catch (error) {
