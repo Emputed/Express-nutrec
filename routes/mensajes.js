@@ -4,5 +4,6 @@ const router = express.Router();
 
 router.post("/save", mensaje.saveMessage);
 router.get("/:room", mensaje.getMessages);
+router.get("/rooms", mensaje.getRooms);
 
 export default router;

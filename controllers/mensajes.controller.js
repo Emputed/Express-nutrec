@@ -12,7 +12,6 @@ const streamToString = async (readableStream) => {
       readableStream.on("error", reject);
     });
   };
-  
 
   mensajeController.saveMessage = async (req, res) => {
     try {
@@ -89,5 +88,23 @@ const streamToString = async (readableStream) => {
       res.status(500).json({ error: "No se pudo obtener el historial de mensajes." });
     }
   };
+  mensajeController.getRooms = async (req, res) => {
+    try {
+      const containerClient = blobServiceClient.getContainerClient(containerName);
+      const rooms = [];
+  
+      for await (const blob of containerClient.listBlobsFlat()) {
+        if (blob.name.endsWith(".json")) {
+          rooms.push(blob.name.replace(".json", "")); // Extraer el nombre de la sala
+        }
+      }
+  
+      res.json({ rooms });
+    } catch (error) {
+      console.error("Error al obtener salas activas:", error);
+      res.status(500).json({ error: "No se pudo obtener las salas activas." });
+    }
+  };
+  
 
 export default mensajeController;
