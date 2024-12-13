@@ -41,6 +41,9 @@ crudController.getPaciente = async (req, res) => {
           sequelize.literal("TIMESTAMPDIFF(YEAR, f_nacimiento, CURDATE())"),
           "edad",
         ], //Calcular la edad
+        "f_nacimiento",
+        "usuario",
+        "password",
         "genero",
       ],
     });
