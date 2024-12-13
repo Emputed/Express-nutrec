@@ -106,7 +106,7 @@ const streamToString = async (readableStream) => {
       }
       res.json({ rooms });
     } catch (error) {
-      console.error("Error al obtener salas activas:", error);
+      console.error("Error al obtener salas activas:", error.response.data);
       res.status(500).json({ error: "No se pudo obtener las salas activas." });
     }
   };
