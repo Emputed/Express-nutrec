@@ -91,11 +91,12 @@ const streamToString = async (readableStream) => {
   mensajeController.getRooms = async (req, res) => {
     try {
       const { role } = req.query; 
+      console.log("Query recibida:", req.query);
+      console.log("Body recibido:", req.body);
       // Validar que sea la nutrióloga
       if (role !== "nutriologa") {
         return res.status(403).json({ error: "Acceso denegado. Solo la nutrióloga puede acceder a todas las salas." });
       }
-      
       const containerClient = blobServiceClient.getContainerClient(containerName);
       const rooms = [];
       for await (const blob of containerClient.listBlobsFlat()) {
@@ -103,7 +104,6 @@ const streamToString = async (readableStream) => {
           rooms.push(blob.name.replace(".json", "")); // Extraer el nombre de la sala
         }
       }
-  
       res.json({ rooms });
     } catch (error) {
       console.error("Error al obtener salas activas:", error);
