@@ -41,7 +41,8 @@ app.use('/api/v1/messages', mensajesRouter);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://nice-glacier-0e793e60f.5.azurestaticapps.net", 
+    //origin: "https://nice-glacier-0e793e60f.5.azurestaticapps.net", 
+    origin: "*", 
     methods: ["GET", "POST"],
   },
 });
