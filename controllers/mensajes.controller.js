@@ -90,9 +90,14 @@ const streamToString = async (readableStream) => {
   };
   mensajeController.getRooms = async (req, res) => {
     try {
+      const { role } = req.query; 
+      // Validar que sea la nutrióloga
+      if (role !== "nutriologa") {
+        return res.status(403).json({ error: "Acceso denegado. Solo la nutrióloga puede acceder a todas las salas." });
+      }
+      
       const containerClient = blobServiceClient.getContainerClient(containerName);
       const rooms = [];
-  
       for await (const blob of containerClient.listBlobsFlat()) {
         if (blob.name.endsWith(".json")) {
           rooms.push(blob.name.replace(".json", "")); // Extraer el nombre de la sala
