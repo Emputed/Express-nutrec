@@ -90,7 +90,7 @@ const streamToString = async (readableStream) => {
   };
   mensajeController.getRooms = async (req, res) => {
     try {
-      const { role } = req.query; 
+      const { role } = req.params; 
       console.log("Query recibida:", req.query);
       console.log("Body recibido:", req.body);
       // Validar que sea la nutrióloga
